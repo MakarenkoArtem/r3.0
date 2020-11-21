@@ -15,7 +15,7 @@ class MyWidget(QMainWindow):
 
     def update_result(self):
         result = self.cur.execute(
-            f"SELECT * FROM coffee WHERE title='{self.plainTextEdit.toPlainText().split('=')[-1]}'").fetchall()
+            f"SELECT * FROM coffee WHERE title='{self.plainTextEdit.toPlainText().split('=')[-1].capitalize()}'").fetchall()
         self.tableWidget.setRowCount(len(result))
         if not result:
             return
