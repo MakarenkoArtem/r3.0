@@ -97,7 +97,6 @@ class MyWidget(QMainWindow, Ui_Form1):
             return
         self.tableWidget.setColumnCount(len(result[0]))
         for i, elem in enumerate(result):
-            print(elem)
             s = list(elem[:2]) + [self.cur.execute(
                 f"SELECT title FROM grades WHERE id={elem[2]}").fetchall()[0][0], self.cur.execute(
                 f"SELECT title FROM Degree_of_roast WHERE id={elem[3]}").fetchall()[0][0],
