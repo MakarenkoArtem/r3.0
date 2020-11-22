@@ -2,13 +2,16 @@ import sqlite3
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QMessageBox, QDialog
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
+import sys
+sys.path.insert(0, 'UI')
+from UI.addEditCoffeeForm import Ui_Form
+from main import Ui_Form1
 
-
-class Change(QDialog):
+class Change(QDialog, Ui_Form):
     def __init__(self, title):
         super().__init__()
-        uic.loadUi('addEditCoffeeForm.ui', self)
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.setupUi(self)
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.cur = self.con.cursor()
         self.title = title
         if title != '':
@@ -22,7 +25,6 @@ class Change(QDialog):
         if not result:
             return
         for i, elem in enumerate(result[1:]):
-            print(i, elem)
             if i == 0:
                 self.lineEdit.setText(elem)
             elif i == 1:
@@ -52,11 +54,11 @@ class Change(QDialog):
         self.close()
 
 
-class MyWidget(QMainWindow):
+class MyWidget(QMainWindow, Ui_Form1):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.setupUi(self)
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.cur = self.con.cursor()
         self.pushButton.clicked.connect(self.update_result)
         self.tableWidget.itemChanged.connect(self.item_changed)
@@ -83,7 +85,7 @@ class MyWidget(QMainWindow):
         result = self.cur.execute(
             f"SELECT * FROM coffee WHERE title='{title}'").fetchall()
         if not result or self.sender() == self.pushButton_3:
-            title == ''
+            title = ''
         Change(title).exec_()
         self.update_result()
 
